@@ -29,19 +29,16 @@ if (!function_exists('espresso_category_accordion')) {
 
 	function espresso_category_accordion(){
 
-		global $org_options,$events, $ee_attributes;
+		global $wpdb, $org_options,$events, $ee_attributes;
 
-		//Extract shortcode attributes
-		extract($ee_attributes);
-
-		$css_file = isset($css_file) && !empty($css_file) ? $css_file : 'style';
+		//If the css_file parameter is used in the shortcode
+		$css_file = isset($ee_attributes['css_file']) && !empty($ee_attributes['css_file']) ? $ee_attributes['css_file'] : 'style';
 
 		//Register styles
 		wp_register_style( 'espresso_category_accordion', WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) .'/'. $css_file .'.css' );
 		wp_enqueue_style( 'espresso_category_accordion');
-
-
-		global $wpdb;
+		
+		//Get the categories
 		$sql = "SELECT * FROM " . EVENTS_CATEGORY_TABLE;
 		$categories = $wpdb->get_results($sql);
 
@@ -65,10 +62,10 @@ if (!function_exists('espresso_category_accordion')) {
 		echo '<div id="espresso_accordion"><ul class="espresso-category-accordion">';
 
 		foreach ($categories as $category) {
-    		$catcode = $category->id;
-    		$catmeta = unserialize($category->category_meta);
-    		$bg = $catmeta['event_background'];
-    		$fontcolor = $catmeta['event_text_color'];
+			$catcode = $category->id;
+			$catmeta = unserialize($category->category_meta);
+			$bg = $catmeta['event_background'];
+			$fontcolor = $catmeta['event_text_color'];
    			$use_bg = $catmeta['use_pickers'];
 
 			if($use_bg == "Y") {
@@ -77,22 +74,22 @@ if (!function_exists('espresso_category_accordion')) {
 				echo '<li class="has-sub" style="border-left: 10px solid #CCC";><a href="#">';
 			}
 		
-            echo '<h2 class="ee-category">';
-            echo $category->category_name;
-            echo '</h2></a>';
-            echo '<ul><li>';
+			echo '<h2 class="ee-category">'.$category->category_name.'</h2></a>';
+			echo '<ul><li>';
 
-            foreach ($events as $event){
+			foreach ($events as $event){
 				$path_to_thumbnail = '';
 				$filename = '';
 				$event_meta = unserialize($event->event_meta);
-            	if (!empty($event_meta['event_thumbnail_url'])){
+				$link_text = __('Register Now!', 'event_espresso');
+				if (!empty($event_meta['event_thumbnail_url'])){
 					$upload_dir = wp_upload_dir();
 					$pathinfo = pathinfo( $event_meta['event_thumbnail_url'] );
 					$dirname = $pathinfo['dirname'] . '/';
 					$filename = $pathinfo['filename'];
 					$ext = $pathinfo['extension'];
 					$path_to_thumbnail = $dirname . $filename . '.' . $ext;
+					$externalURL = $event->externalURL; $registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
 	
 					if ( $pathinfo['dirname'] == $upload_dir['baseurl'] ) {
 						if ( ! file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext )) {
@@ -104,64 +101,56 @@ if (!function_exists('espresso_category_accordion')) {
 				//lets check the staus and attendee count
 				$open_spots	= get_number_of_attendees_reg_limit($event->id, 'number_available_spaces');
 
-				if($open_spots < 1) {
-					$the_status = __('Sold Out.', 'event_espresso');
-				} elseif (event_espresso_get_status($event->id) == 'NOT_ACTIVE') {
-					$the_status = __('Closed.', 'event_espresso');
-				} else {
-					$the_status = __('Register Now!', 'event_espresso');
-				}
-
-				if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-					$the_status = __('Join Waiting List', 'event_espresso');
+				if($open_spots < 1 && $event->allow_overflow == 'N') {
+					$link_text = __('Sold Out', 'event_espresso');
+				} else if ($open_spots < 1 && $event->allow_overflow == 'Y'){
 					$registration_url = espresso_reg_url($event->overflow_event_id);
+					$link_text = !empty($event->overflow_event_id) ? __('Join Wait List', 'event_espresso') : __('Sold Out', 'event_espresso');
+				}
+				
+				if ( $event_status == 'NOT_ACTIVE' ) {
+					$link_text = __('Closed', 'event_espresso');
 				}
 
 				$event_name = stripslashes_deep($event->event_name);
 
-            	$arr=explode(",",$event->category_id);
-            	foreach ($arr as $a) {
-	            	if ($a == $catcode) {
-	                $externalURL = $event->externalURL; $registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
-	                
-	                if ($event->allow_overflow == 'Y' && event_espresso_get_status($event->id) == 'ACTIVE'){
-						$the_status = __('Join Waiting List', 'event_espresso');
-						$registration_url = espresso_reg_url($event->overflow_event_id);
+				$arr=explode(",",$event->category_id);
+				foreach ($arr as $a) {
+					if ($a == $catcode) {
+						echo '<li><h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
+						echo !empty($filename)?'<img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" />':'';
+						echo '<h4 class="event-date">' . event_date_display($event->start_date.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')) . '</h4>';
+						echo '<p class="event-cost">' . $org_options['currency_symbol'];
+						echo $event->event_cost . '</p>'; 
+						echo '<p class="event-status"><a href="' . $registration_url . '"">' . $link_text . '</a></p>';
+						echo '</li>';
 					}
-	                echo '<li><h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
-	                echo !empty($filename)?'<img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" />':'';
-	                echo '<h4 class="event-date">' . event_date_display($event->start_date, 'M j, Y') . '</h4>';
-	                echo '<p class="event-cost">' . $org_options['currency_symbol'];
-	                echo $event->event_cost . '</p>'; 
-	                echo '<p class="event-status"><a href="' . $registration_url . '"">' . $the_status . '</a></p>';
-	            	echo '</li>';
-	            	}
-            	}
-            }
-            echo '</ul>';
-        }
-    echo '</li></ul></div>';
+				}
+			}
+			echo '</ul>';
+		}
+	echo '</li></ul></div>';
 	
 	?>
 	<script>
 	jQuery(function ($) {
-	$('#espresso_accordion > ul > li > a').click(function() {
-	  $('#espresso_accordion li').removeClass('active');
-	  $(this).closest('li').addClass('active');	
-	  var checkElement = $(this).next();
-	  if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
-		$(this).closest('li').removeClass('active');
-		checkElement.slideUp('normal');
-	  }
-	  if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
-		$('#espresso_accordion ul ul:visible').slideUp('normal');
-		checkElement.slideDown('normal');
-	  }
-	  if($(this).closest('li').find('ul').children().length == 0) {
-		return true;
-	  } else {
-		return false;	
-	  }		
+		$('#espresso_accordion > ul > li > a').click(function() {
+			$('#espresso_accordion li').removeClass('active');
+			$(this).closest('li').addClass('active');	
+			var checkElement = $(this).next();
+			if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
+				$(this).closest('li').removeClass('active');
+				checkElement.slideUp('normal');
+			}
+			if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
+				$('#espresso_accordion ul ul:visible').slideUp('normal');
+				checkElement.slideDown('normal');
+			}
+			if($(this).closest('li').find('ul').children().length == 0) {
+				return true;
+			} else {
+				return false;	
+			}		
 		});
 	});
 	</script>
