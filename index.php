@@ -69,9 +69,9 @@ if (!function_exists('espresso_category_accordion')) {
    			$use_bg = $catmeta['use_pickers'];
 
 			if($use_bg == "Y") {
-				echo '<li class="has-sub" style="border-left: 10px solid ' . $bg . '";><a href="#">';
+				echo '<li class="has-sub" style="border-left: 10px solid ' . $bg . ';"><a href="#">';
 			} else {
-				echo '<li class="has-sub" style="border-left: 10px solid #CCC";><a href="#">';
+				echo '<li class="has-sub" style="border-left: 10px solid #CCC;"><a href="#">';
 			}
 		
 			echo '<h2 class="ee-category">'.$category->category_name.'</h2></a>';
