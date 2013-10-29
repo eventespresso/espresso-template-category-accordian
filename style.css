@@ -49,10 +49,10 @@
 }
 #espresso_accordion img.ee-event-thumb{
   float:             right;
-  width:             72px;
-  max-width:         72px;
+  width:             120px;
+  max-width:         120px;
   height:            auto;
-  margin:            10px;
+  margin:            20px;
 }
 #espresso_accordion p.event-date {
   clear:             none;
@@ -82,8 +82,10 @@
   margin:             10px;
 }
 #espresso_accordion h3.event-title,
+#espresso_accordion div.event-desc,
 #espresso_accordion p.event-date,
-#espresso_accordion p.event-cost {
+#espresso_accordion p.event-cost,
+#espresso_accordion p.event-venue {
   padding-left:       15px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing:    border-box;
