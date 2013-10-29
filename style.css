@@ -42,7 +42,7 @@
 }
 #espresso_accordion h3.event-title {
   clear:             none;
-  font-size:         1.2em;
+  font-size:         1.5em;
   font-weight:       400;
   margin:            0;
   padding:           10px 0 10px 0;
@@ -54,17 +54,16 @@
   height:            auto;
   margin:            10px;
 }
-#espresso_accordion h4.event-date {
+#espresso_accordion p.event-date {
   clear:             none;
   font-size:         1.1em;
   font-weight:       400;
-  margin:            0;
-  padding:           10px 0;
+  margin:            0 0 10px 0;
 }
 #espresso_accordion p.event-cost,
 #espresso_accordion p.event-status {
   font-size:         1em;
-  margin:            0;
+  margin:            0 0 10px 0;
   padding:           0;
 }
 #espresso_accordion p.event-status{
@@ -83,9 +82,9 @@
   margin:             10px;
 }
 #espresso_accordion h3.event-title,
-#espresso_accordion h4.event-date,
+#espresso_accordion p.event-date,
 #espresso_accordion p.event-cost {
-  padding-left:       10px;
+  padding-left:       15px;
   -webkit-box-sizing: border-box;
   -moz-box-sizing:    border-box;
   box-sizing:         border-box;

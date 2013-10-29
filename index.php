@@ -123,9 +123,9 @@ if (!function_exists('espresso_category_accordion')) {
 					if ($a == $catcode) {
 						echo '<li><h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
 						echo !empty($filename)?'<img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" />':'';
-						echo '<h4 class="event-date">' . event_date_display($event->start_date.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')) . '</h4>';
-						echo '<p class="event-cost">' . $org_options['currency_symbol'];
-						echo $event->event_cost . '</p>'; 
+						echo '<p id="p_event_price-'. $event->id .'" class="event_price event-cost"><span class="section-title">'.__('Price: ', 'event_espresso').'</span> ' . $org_options['currency_symbol'].$event->event_cost . '</p>';
+						echo '<p id="event_date-'.$event->id.'" class="event-date event-meta"><span class="section-title ">'.__('Date:', 'event_espresso').'</span> ' . event_date_display($event->start_date.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')) . '</p>';
+
 						echo '<p class="event-status"><a href="' . $registration_url . '"">' . $link_text . '</a></p>';
 						echo '</li>';
 					}
