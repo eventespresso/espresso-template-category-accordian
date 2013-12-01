@@ -125,7 +125,7 @@ if (!function_exists('espresso_category_accordion')) {
 						echo '<div class="event-desc">'.espresso_format_content($event->event_desc).'</div>';
 						echo '<p id="p_event_price-'. $event->id .'" class="event_price event-cost"><span class="section-title">'.__('Price: ', 'event_espresso').'</span> ' . $org_options['currency_symbol'].$event->event_cost . '</p>';
 						echo '<p id="event_date-'.$event->id.'" class="event-date event-meta"><span class="section-title ">'.__('Date:', 'event_espresso').'</span> ' . event_date_display($event->start_date.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')) . '</p>';
-						echo '<p id="event_venue-'.$event->id.'" class="event-venue event-meta"><span class="section-title ">'.__('Venue:', 'event_espresso').'</span> ' . $event->venue_name . '</p>';
+						echo isset($event->venue_name) ? '<p id="event_venue-'.$event->id.'" class="event-venue event-meta"><span class="section-title ">'.__('Venue:', 'event_espresso').'</span> ' . $event->venue_name . '</p>' : '';
 
 						echo '<p class="event-status"><a href="' . $registration_url . '"">' . $link_text . '</a></p>';
 						echo '</li>';
