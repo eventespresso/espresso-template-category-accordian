@@ -62,6 +62,10 @@ if (!function_exists('espresso_category_accordion')) {
 		echo '<div id="espresso_accordion"><ul class="espresso-category-accordion">';
 
 		foreach ($categories as $category) {
+
+			$event_status = event_espresso_get_status($event->id);
+			$externalURL = $event->externalURL; 
+			$registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
 			$catcode = $category->id;
 			$catmeta = unserialize($category->category_meta);
 			$bg = $catmeta['event_background'];
@@ -89,8 +93,6 @@ if (!function_exists('espresso_category_accordion')) {
 					$filename = $pathinfo['filename'];
 					$ext = $pathinfo['extension'];
 					$path_to_thumbnail = $dirname . $filename . '.' . $ext;
-					$externalURL = $event->externalURL; $registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
-					$event_status = event_espresso_get_status($event->id);
 					if ( $pathinfo['dirname'] == $upload_dir['baseurl'] ) {
 						if ( ! file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext )) {
 							$path_to_thumbnail = file_exists( $uploads['basedir'] . DIRECTORY_SEPARATOR . $filename . '.' . $ext ) ? $event_meta['event_thumbnail_url'] : FALSE;
