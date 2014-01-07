@@ -63,9 +63,7 @@ if (!function_exists('espresso_category_accordion')) {
 
 		foreach ($categories as $category) {
 
-			$event_status = event_espresso_get_status($event->id);
-			$externalURL = $event->externalURL; 
-			$registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
+			
 			$catcode = $category->id;
 			$catmeta = unserialize($category->category_meta);
 			$bg = $catmeta['event_background'];
@@ -86,6 +84,9 @@ if (!function_exists('espresso_category_accordion')) {
 				$filename = '';
 				$event_meta = unserialize($event->event_meta);
 				$link_text = __('Register Now!', 'event_espresso');
+				$event_status = event_espresso_get_status($event->id);
+				$externalURL = $event->externalURL; 
+				$registration_url = !empty($externalURL) ? $externalURL : espresso_reg_url($event->id);
 				if (!empty($event_meta['event_thumbnail_url'])){
 					$upload_dir = wp_upload_dir();
 					$pathinfo = pathinfo( $event_meta['event_thumbnail_url'] );
