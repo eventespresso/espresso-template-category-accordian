@@ -108,7 +108,7 @@
 }
 /* Sub menu */
 #espresso_accordion ul ul {
-  display:            none;
+  /*display:            none;*/
   background:         #fff;
 }
 #espresso_accordion ul ul li {
@@ -133,4 +133,8 @@
 #espresso_accordion a:focus {
   outline:            none;
   -moz-outline-style: none;
+}
+
+.eedisplaynone {
+  display:            none;
 }

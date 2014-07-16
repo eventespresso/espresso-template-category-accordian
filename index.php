@@ -23,11 +23,19 @@
 
 */
 
+function load_scripts() {
+		wp_register_script( 'category_accordion', WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) .'/js/category-accordion.js', array('jquery'), '0.1', TRUE );
+}
+add_action( 'wp_enqueue_scripts', 'load_scripts' );
+
+
 add_action('action_hook_espresso_custom_template_category-accordion','espresso_category_accordion', 10, 1);
 
 if (!function_exists('espresso_category_accordion')) {
 
 	function espresso_category_accordion(){
+
+		wp_enqueue_script( 'category_accordion' );
 
 		global $wpdb, $org_options,$events, $ee_attributes;
 
@@ -136,31 +144,7 @@ if (!function_exists('espresso_category_accordion')) {
 			echo '</ul>';
 		}
 	echo '</li></ul></div>';
-	
-	?>
-	<script>
-	jQuery(function ($) {
-		$('#espresso_accordion > ul > li > a').click(function() {
-			$('#espresso_accordion li').removeClass('active');
-			$(this).closest('li').addClass('active');	
-			var checkElement = $(this).next();
-			if((checkElement.is('ul')) && (checkElement.is(':visible'))) {
-				$(this).closest('li').removeClass('active');
-				checkElement.slideUp('normal');
-			}
-			if((checkElement.is('ul')) && (!checkElement.is(':visible'))) {
-				$('#espresso_accordion ul ul:visible').slideUp('normal');
-				checkElement.slideDown('normal');
-			}
-			if($(this).closest('li').find('ul').children().length == 0) {
-				return true;
-			} else {
-				return false;	
-			}		
-		});
-	});
-	</script>
-	<?php
+
 	}
 }
 
