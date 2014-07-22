@@ -83,7 +83,7 @@ foreach ($categories as $category) {
 			}
 		}
 	}
-				if( $i == 0 ) { $toutput .= '<li class="catacc_noevents">' . __('No events found.') . '</li>'; }
+				if( $i == 0 ) { $toutput .= '<li class="catacc_noevents">' . __('No events found.', 'event_espresso') . '</li>'; }
 
 	$toutput .= '</ul>';
 }
