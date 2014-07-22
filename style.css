@@ -138,3 +138,7 @@
 .eedisplaynone {
   display:            none;
 }
+
+#espresso_accordion li.catacc_noevents {
+  padding:            10px;
+}

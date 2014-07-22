@@ -35,6 +35,8 @@ if (!function_exists('espresso_category_accordion')) {
 
 	function espresso_category_accordion(){
 
+		$toutput = '';
+
 		wp_enqueue_script( 'category_accordion' );
 
 		global $wpdb, $org_options,$events, $ee_attributes;
@@ -67,9 +69,11 @@ if (!function_exists('espresso_category_accordion')) {
 		if (function_exists('event_espresso_multi_reg_init')) {
 			$multi_reg = true;
 		}
-		echo '<div id="espresso_accordion"><ul class="espresso-category-accordion">';
+		$toutput .= '<div id="espresso_accordion"><ul class="espresso-category-accordion">';
 
 		foreach ($categories as $category) {
+							$i = 0;
+
 			$catcode = $category->id;
 			$catmeta = unserialize($category->category_meta);
 			$bg = $catmeta['event_background'];
@@ -77,13 +81,13 @@ if (!function_exists('espresso_category_accordion')) {
    			$use_bg = $catmeta['use_pickers'];
 
 			if($use_bg == "Y") {
-				echo '<li class="has-sub" style="border-left: 10px solid ' . $bg . ';"><a href="#">';
+				$toutput .= '<li class="has-sub" style="border-left: 10px solid ' . $bg . ';">';
 			} else {
-				echo '<li class="has-sub" style="border-left: 10px solid #CCC;"><a href="#">';
+				$toutput .= '<li class="has-sub" style="border-left: 10px solid #CCC;">';
 			}
 		
-			echo '<h2 class="ee-category">'.$category->category_name.'</h2></a>';
-			echo '<ul><li>';
+			$toutput .= '<h2 class="ee-category"><a href="#">'.$category->category_name.'</a></h2>';
+			$toutput .= '<ul>';
 
 			foreach ($events as $event){
 				$path_to_thumbnail = '';
@@ -130,21 +134,26 @@ if (!function_exists('espresso_category_accordion')) {
 				$arr=explode(",",$event->category_id);
 				foreach ($arr as $a) {
 					if ($a == $catcode) {
-						echo '<li>'.(!empty($filename)?'<a href="' . $registration_url . '""><img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" /></a>':'').'<h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
-						echo '<div class="event-desc">'.espresso_format_content($event->event_desc).'</div>';
-						echo '<p id="p_event_price-'. $event->id .'" class="event_price event-cost"><span class="section-title">'.__('Price: ', 'event_espresso').'</span> ' . $org_options['currency_symbol'].$event->event_cost . '</p>';
-						echo '<p id="event_date-'.$event->id.'" class="event-date event-meta"><span class="section-title ">'.__('Date:', 'event_espresso').'</span> ' . event_date_display($event->start_date.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')) . '</p>';
-						echo isset($event->venue_name) ? '<p id="event_venue-'.$event->id.'" class="event-venue event-meta"><span class="section-title ">'.__('Venue:', 'event_espresso').'</span> ' . $event->venue_name . '</p>' : '';
+						$toutput .= '<li>'.(!empty($filename)?'<a href="' . $registration_url . '""><img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" /></a>':'').'<h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
+						$toutput .= '<div class="event-desc">'.espresso_format_content($event->event_desc).'</div>';
+						$toutput .= '<p id="p_event_price-'. $event->id .'" class="event_price event-cost"><span class="section-title">'.__('Price: ', 'event_espresso').'</span> ' . $org_options['currency_symbol'].$event->event_cost . '</p>';
+						$toutput .= '<p id="event_date-'.$event->id.'" class="event-date event-meta"><span class="section-title ">'.__('Date:', 'event_espresso').'</span> ' . event_date_display($event->start_date.' '.$event->start_time, get_option('date_format').' '.get_option('time_format')) . '</p>';
+						$toutput .= isset($event->venue_name) ? '<p id="event_venue-'.$event->id.'" class="event-venue event-meta"><span class="section-title ">'.__('Venue:', 'event_espresso').'</span> ' . $event->venue_name . '</p>' : '';
 
-						echo '<p class="event-status"><a href="' . $registration_url . '"">' . $link_text . '</a></p>';
-						echo '</li>';
+						$toutput .= '<p class="event-status"><a href="' . $registration_url . '"">' . $link_text . '</a></p>';
+						$toutput .= '</li>';
+					$i++;
 					}
 				}
 			}
-			echo '</ul>';
-		}
-	echo '</li></ul></div>';
+						if( $i == 0 ) { $toutput .= '<li class="catacc_noevents">' . __('No events found.') . '</li>'; }
 
+			$toutput .= '</ul>';
+		}
+
+	$toutput .= '</li></ul></div>';
+
+	echo $toutput;
 	}
 }
 
