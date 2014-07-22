@@ -100,10 +100,10 @@
 #espresso_accordion > ul > li.active h2.ee-category {
 	border-bottom:      none;
 }
-#espresso_accordion > ul > li.has-sub > a {
+#espresso_accordion > ul > li.has-sub > h2 {
   background:         url(images/icon_plus.png) 96% center no-repeat;
 }
-#espresso_accordion > ul > li.has-sub.active > a {
+#espresso_accordion > ul > li.has-sub.active > h2 {
   background:         url(images/icon_minus.png) 96% center no-repeat;
 }
 /* Sub menu */
