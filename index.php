@@ -3,7 +3,7 @@
   Plugin Name: Event Espresso Template - Category Accordion
   Plugin URI: http://www.eventespresso.com
   Description: Will display the categories in bars, once clicked events associated with that category will appear in an "accordion" style. If category colours are turned on, the block to the left will be that colour, otherwise it will default to grey. [EVENT_CUSTOM_VIEW template_name="category-accordion"] (Extra parameter: exclude="1,2,3" This uses the category IDs and will exclude them from being listed. Use a single number or a comma separated list of numbers.)
-  Version: 1.1.p
+  Version: 1.2.p
   Author: Event Espresso
   Author URI: http://www.eventespresso.com
   Copyright 2013 Event Espresso (email : support@eventespresso.com)
