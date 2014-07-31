@@ -27,6 +27,8 @@ foreach ($categories as $category) {
 	$toutput .= '<ul>';
 
 	foreach ($events as $event){
+		$this_event_desc	= explode('<!--more-->', $event->event_desc);
+		$this_event_desc 	= array_shift($this_event_desc);
 		$path_to_thumbnail = '';
 		$filename = '';
 		$event_meta = unserialize($event->event_meta);
@@ -71,15 +73,15 @@ foreach ($categories as $category) {
 		$arr=explode(",",$event->category_id);
 		foreach ($arr as $a) {
 			if ($a == $catcode) {
-				$ed = explode('<!--more-->', $event->event_desc);
-
+				//$ed = explode('<!--more-->', $event->event_desc);
+				
 				$toutput .= '<li>'.(!empty($filename)?'<a href="' . $registration_url . '""><img id="ee-event-thumb-' . $event->id . '" class="ee-event-thumb" src="' . $path_to_thumbnail . '" alt="image of ' . $filename . '" /></a>':'').'<h3 class="event-title" id="event-title-' . $event->id . '" ><a href="' . $registration_url . '"">' . $event_name . '</a></h3>';
 
 
 				if( isset($ee_attributes['show_description']) && $ee_attributes['show_description'] == "false" ) { 
 					//do nothing 
 				} else {
-					$toutput .= '<div class="event-desc">'.espresso_format_content($ed[0]).'</div>';
+					$toutput .= '<div class="event-desc">'.espresso_format_content($this_event_desc).'</div>';
 				}
 
 				$toutput .= '<p id="p_event_price-'. $event->id .'" class="event_price event-cost"><span class="section-title">'.__('Price: ', 'event_espresso').'</span> ' . $org_options['currency_symbol'].$event->event_cost . '</p>';
