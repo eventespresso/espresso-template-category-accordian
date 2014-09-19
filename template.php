@@ -81,7 +81,7 @@ foreach ($categories as $category) {
 				if( isset($ee_attributes['show_description']) && $ee_attributes['show_description'] == "false" ) { 
 					//do nothing 
 				} else {
-					$toutput .= '<div class="event-desc">'.espresso_format_content( strip_shortcodes($this_event_desc ) ).'</div>';
+					$toutput .= '<div class="event-desc">'.espresso_format_content( $this_event_desc ).'</div>';
 				}
 
 				$toutput .= '<p id="p_event_price-'. $event->id .'" class="event_price event-cost"><span class="section-title">'.__('Price: ', 'event_espresso').'</span> ' . $org_options['currency_symbol'].$event->event_cost . '</p>';
