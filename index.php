@@ -23,10 +23,10 @@
 
 */
 
-function load_scripts() {
-		wp_register_script( 'category_accordion', WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) .'/js/category-accordion.js', array('jquery'), '0.1', TRUE );
+function espresso_category_accordion_load_scripts() {
+	wp_register_script( 'category_accordion', WP_PLUGIN_URL. "/".plugin_basename(dirname(__FILE__)) .'/js/category-accordion.js', array('jquery'), '0.1', TRUE );
 }
-add_action( 'wp_enqueue_scripts', 'load_scripts' );
+add_action( 'wp_enqueue_scripts', 'espresso_category_accordion_load_scripts' );
 
 
 add_action('action_hook_espresso_custom_template_category-accordion','espresso_category_accordion', 10, 1);
