@@ -27,6 +27,8 @@ foreach ($categories as $category) {
 	$toutput .= '<ul>';
 
 	foreach ($events as $event){
+		global $this_event_id;
+		$this_event_id = $event->id;
 		$this_event_desc	= explode('<!--more-->', $event->event_desc);
 		$this_event_desc 	= array_shift($this_event_desc);
 		$path_to_thumbnail = '';
